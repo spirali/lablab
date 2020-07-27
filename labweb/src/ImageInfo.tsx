@@ -11,15 +11,17 @@ export interface Annotation {
 
 export interface AnnotationState {
     annotation?: Annotation,
-    selectedId?: number
+    selectedId?: number,
+    annotationBackup: Annotation,
+    changed: boolean
 }
-
 
 export interface ImageInfo {
     id: number;
     path: string;
     width: number;
     height: number;
+    annotation?: Annotation;
 }
 
-
+export interface ImageMap { [key: number]: ImageInfo; }

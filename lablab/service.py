@@ -12,7 +12,7 @@ PREVIEW_SIZE = (40, 40)
 
 @app.route('/images')
 def get_images():
-    return jsonify(list(current_app.images.values()))
+    return jsonify(current_app.images)
 
 
 @app.route("/preview/<int:img_id>")

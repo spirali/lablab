@@ -12,13 +12,8 @@ import { SERVER_URL } from './service';
 import { Annotation } from './ImageInfo';
 import { AnnotationState } from './ImageInfo';
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
 
-export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, setAstate: (astate: AnnotationState) => void}) {
+export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, setAstate: (astate: AnnotationState) => void, revert: () => void, save: () => void}) {
     let image = props.image;
 
     const annotation = props.astate.annotation;
@@ -62,13 +57,18 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
     return (
     <Box m={1}>
         <Box m={1}>
-        <ButtonGroup size="small" aria-label="button group">
+        <ButtonGroup>
             <Button onClick={()=> setZoom(zoom + ZOOM_STEP)}>+</Button>
             <Button onClick={()=> setZoom(zoom - ZOOM_STEP)}>-</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+        <Button disabled={!props.astate.changed} onClick={props.save}>Save</Button>
+        <Button disabled={!props.astate.changed} onClick={props.revert}>Revert</Button>
         </ButtonGroup>
         </Box>
         <Box>
         <svg onClick={onClick}
+             onDoubleClick={()=>undefined}
             viewBox={"0 0 " + image.width + " " + image.height} style={{width: image.width * zoom, height: image.height * zoom}}>
             <image href={image_url} height={image.height} width={image.width}/>
             {
