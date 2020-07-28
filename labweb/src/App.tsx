@@ -8,6 +8,7 @@ import { Annotator } from './Annotator';
 import AnnotationList from './AnnotationList';
 import { AnnotationState } from './ImageInfo';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { SERVER_URL, uploadAnnotation } from './service';
 
 
 const emptyAnnotation = {items:
@@ -37,7 +38,7 @@ function App() {
     const [info, setInfo] = React.useState<Info | null>({state: InfoState.LOADING});
 
     React.useEffect(() => {
-        fetch('http://localhost:3800/images')
+        fetch(SERVER_URL + '/images')
         .then(response => response.json())
         .then(data => {
             setInfo(null);
@@ -71,6 +72,13 @@ function App() {
 
     const save = () => {
         if (astate.changed && images && currentImage && astate.annotation) {
+            uploadAnnotation(currentImage.id, astate.annotation).then(r =>
+                {
+                    if (!r.ok || r.status != 200) {
+                        console.log("ERROR");
+                        setInfo({state: InfoState.ERROR, message: "Uploading annotation failed"})
+                    }
+                });
             let annotation = astate.annotation;
             let tmp = {...images};
             tmp[currentImage.id] = {...currentImage, annotation: annotation}
@@ -82,7 +90,6 @@ function App() {
     const revert = () => {
         setAstate({...astate, changed: false, annotation: astate.annotationBackup});
     };
-
 
 
     /*

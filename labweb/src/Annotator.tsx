@@ -67,8 +67,8 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
         </ButtonGroup>
         </Box>
         <Box>
-        <svg onClick={onClick}
-             onDoubleClick={()=>undefined}
+        <svg
+             onMouseDown={onClick}
             viewBox={"0 0 " + image.width + " " + image.height} style={{width: image.width * zoom, height: image.height * zoom}}>
             <image href={image_url} height={image.height} width={image.width}/>
             {
