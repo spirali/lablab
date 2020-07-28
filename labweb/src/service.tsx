@@ -7,7 +7,7 @@ export const SERVER_URL = "http://localhost:3800";
 function doPost(url: string, data: any): Promise<Response> {
     return fetch(url, {
         method: 'POST',
-        mode: 'no-cors',
+        mode: 'cors',
         cache: 'no-cache',
         headers: {
           'Content-Type': 'application/json'
@@ -17,5 +17,5 @@ function doPost(url: string, data: any): Promise<Response> {
 }
 
 export function uploadAnnotation(imageId: number, annotation: Annotation): Promise<Response> {
-    return doPost(SERVER_URL + '/update/' + imageId, annotation)
+    return doPost(SERVER_URL + '/annotation/' + imageId, annotation)
 }

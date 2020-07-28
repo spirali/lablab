@@ -74,8 +74,8 @@ function App() {
         if (astate.changed && images && currentImage && astate.annotation) {
             uploadAnnotation(currentImage.id, astate.annotation).then(r =>
                 {
-                    if (!r.ok || r.status != 200) {
-                        console.log("ERROR");
+                    console.log(r);
+                    if (!r.ok || r.status !== 200) {
                         setInfo({state: InfoState.ERROR, message: "Uploading annotation failed"})
                     }
                 });
@@ -98,7 +98,7 @@ function App() {
     };*/
 
     if (info) {
-        if (info.state == InfoState.LOADING) {
+        if (info.state === InfoState.LOADING) {
             return <CircularProgress/>
         }
         return (
