@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react';
-import { Component, MouseEvent } from 'react';
+import React from 'react';
+import { MouseEvent } from 'react';
 //import { Button, TableContainer, TableHead, TableCell, TableBody, Table, TableRow, TableFooter, TablePagination } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
 import { ImageInfo } from './ImageInfo';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Box from '@material-ui/core/Box';
-import MaterialTable from 'material-table'
 import { SERVER_URL } from './service';
-import { Annotation } from './ImageInfo';
 import { AnnotationState } from './ImageInfo';
 
 
@@ -23,7 +19,7 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
         return <span>No Image</span>
     }
 
-    let image_url = SERVER_URL + "/image/" + image.id;
+    let image_url = SERVER_URL + "/image/" + image.path;
     let width = 2 / zoom;
 
     const ZOOM_STEP = 0.25;
@@ -73,7 +69,7 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
             <image href={image_url} height={image.height} width={image.width}/>
             {
                 annotation?(annotation.items.map((a) => {
-                    if (a.id == props.astate.selectedId) {
+                    if (a.id === props.astate.selectedId) {
                         return <circle key={"circ" + a.id} cx={a.x} cy={a.y} r={width*2} stroke={"#ff0"} strokeWidth={width} fill="#f0f"/>
                     } else {
                         return <circle key={"circ" + a.id} cx={a.x} cy={a.y} r={width*2} stroke={"#f0f"} strokeWidth={width} fill="none"/>

@@ -17,11 +17,10 @@ export interface AnnotationState {
 }
 
 export interface ImageInfo {
-    id: number;
     path: string;
     width: number;
     height: number;
     annotation?: Annotation;
 }
 
-export interface ImageMap { [key: number]: ImageInfo; }
+export interface ImageMap { [key: string]: ImageInfo; }

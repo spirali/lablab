@@ -1,9 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ImageTable from './ImageTable';
-import { Button, Paper, Grid, Container, Box } from '@material-ui/core';
-import { ImageInfo, ImageMap, Annotation } from './ImageInfo';
+import { Grid, Box } from '@material-ui/core';
+import { ImageInfo, ImageMap } from './ImageInfo';
 import { Annotator } from './Annotator';
 import AnnotationList from './AnnotationList';
 import { AnnotationState } from './ImageInfo';
@@ -15,7 +14,6 @@ const emptyAnnotation = {items:
         //[{id: 0, x: 100, y: 100}, {id: 1, x: 120, y: 90}, {id: 2, x: 220, y: 90}]
         [],
 };
-const annotation = undefined;
 
 
 enum InfoState {
@@ -37,22 +35,6 @@ function App() {
     const [astate, setAstate] = React.useState<AnnotationState>({annotation: emptyAnnotation, changed: false, annotationBackup: emptyAnnotation});
     const [info, setInfo] = React.useState<Info | null>({state: InfoState.LOADING});
 
-    React.useEffect(() => {
-        fetch(SERVER_URL + '/images')
-        .then(response => response.json())
-        .then(data => {
-            setInfo(null);
-            setImages(data);
-            if (data) {
-                setCurrentImage(data[0]);
-            } else {
-                setCurrentImage(undefined);
-            }
-        }).catch(e => {
-            setInfo({state: InfoState.ERROR, message: "Connection to service failed:" + e})
-        })
-    }, []);
-
     const setCurrent = (iinfo?: ImageInfo) => {
         save()
         let newAnnotation;
@@ -65,6 +47,22 @@ function App() {
         setCurrentImage(iinfo);
     }
 
+    React.useEffect(() => {
+        fetch(SERVER_URL + '/images')
+        .then(response => response.json())
+        .then(data => {
+            setInfo(null);
+            setImages(data);
+            if (data) {
+                setCurrent(Object.values(data)[0] as ImageInfo);
+            } else {
+                setCurrent(undefined);
+            }
+        }).catch(e => {
+            setInfo({state: InfoState.ERROR, message: "Connection to service failed:" + e})
+        })
+    }, []);
+
     const updateAState = (astate: AnnotationState) => {
         astate.changed = true;
         setAstate(astate);
@@ -72,7 +70,7 @@ function App() {
 
     const save = () => {
         if (astate.changed && images && currentImage && astate.annotation) {
-            uploadAnnotation(currentImage.id, astate.annotation).then(r =>
+            uploadAnnotation(currentImage.path, astate.annotation).then(r =>
                 {
                     console.log(r);
                     if (!r.ok || r.status !== 200) {
@@ -81,7 +79,7 @@ function App() {
                 });
             let annotation = astate.annotation;
             let tmp = {...images};
-            tmp[currentImage.id] = {...currentImage, annotation: annotation}
+            tmp[currentImage.path] = {...currentImage, annotation: annotation}
             setImages(tmp);
             setAstate({...astate, changed: false, annotationBackup: annotation});
         }
@@ -91,11 +89,6 @@ function App() {
         setAstate({...astate, changed: false, annotation: astate.annotationBackup});
     };
 
-
-    /*
-    const astate : AnnotationState = {
-        annotation: annotation
-    };*/
 
     if (info) {
         if (info.state === InfoState.LOADING) {

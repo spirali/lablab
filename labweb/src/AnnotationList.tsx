@@ -1,11 +1,6 @@
 import React from 'react';
 //import { Button, TableContainer, TableHead, TableCell, TableBody, Table, TableRow, TableFooter, TablePagination } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import { ImageInfo } from './ImageInfo';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
-import { SERVER_URL } from './service';
-import { Annotation } from './ImageInfo';
 import { AnnotationState } from './ImageInfo';
 
 
@@ -61,7 +56,7 @@ export function AnnotationList(props: {astate: AnnotationState, onUpdate: (astat
             props.onUpdate({...props.astate, selectedId: selectedRow?.id})
           }
       }}
-      data={annotation.items}
+      data={annotation.items.map(a => ({...a}))}
      />
   );
 }

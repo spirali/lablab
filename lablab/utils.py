@@ -4,34 +4,14 @@ from PIL import Image
 import tempfile
 import logging
 import uuid
+import hashlib
 
 
-def find_images(path):
-    extensions = [".png", ".jpeg", ".jpg"]
-    result = {}
-    id_counter = 0
-    for root, dirs, files in os.walk(path):
-        root_path = os.path.relpath(root, path)
-        for name in files:
-            if any(name.endswith(e) for e in extensions):
-                new_id = id_counter
-                id_counter += 1
-                image_path = os.path.join(root_path, name)
-                print(image_path)
-                result[new_id] = load_image(new_id, path, image_path)
-    return result
+IMAGE_EXTENSIONS = [".png", ".jpeg", ".jpg"]
 
 
-def load_image(new_id, root, image_path):
-    path = os.path.abspath(os.path.join(root, image_path))
-    img = Image.open(path)
-    width, height = img.size
-    return {
-        "id": new_id,
-        "path": image_path,
-        "width": width,
-        "height": height,
-    }
+def check_extension(path):
+    return any(path.endswith(e) for e in IMAGE_EXTENSIONS)
 
 
 def resize_image(path, new_size):
@@ -55,3 +35,15 @@ def atomic_write(filename, content):
     finally:
         if tmp:
             os.unlink(tmp.name)
+
+
+def hash_file(filename):
+    BUFFER_SIZE = 1 << 23  # 8MB
+    hasher = hashlib.sha256()
+    with open(filename, 'rb') as f:
+        while True:
+            data = f.read(BUFFER_SIZE)
+            if not data:
+                break
+            hasher.update(data)
+    return hasher.hexdigest()

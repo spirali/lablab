@@ -1,4 +1,4 @@
-import { ImageInfo, ImageMap, Annotation } from './ImageInfo';
+import { Annotation } from './ImageInfo';
 
 
 export const SERVER_URL = "http://localhost:3800";
@@ -16,6 +16,6 @@ function doPost(url: string, data: any): Promise<Response> {
     })
 }
 
-export function uploadAnnotation(imageId: number, annotation: Annotation): Promise<Response> {
-    return doPost(SERVER_URL + '/annotation/' + imageId, annotation)
+export function uploadAnnotation(imagePath: string, annotation: Annotation): Promise<Response> {
+    return doPost(SERVER_URL + '/annotation/' + imagePath, annotation)
 }
