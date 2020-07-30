@@ -69,7 +69,7 @@ function App() {
     }
 
     const save = () => {
-        if (astate.changed && images && currentImage && astate.annotation) {
+        if (astate.changed && images && currentImage) {
             uploadAnnotation(currentImage.path, astate.annotation).then(r =>
                 {
                     console.log(r);
@@ -88,7 +88,6 @@ function App() {
     const revert = () => {
         setAstate({...astate, changed: false, annotation: astate.annotationBackup});
     };
-
 
     if (info) {
         if (info.state === InfoState.LOADING) {

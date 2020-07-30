@@ -10,7 +10,7 @@ export interface Annotation {
 }
 
 export interface AnnotationState {
-    annotation?: Annotation,
+    annotation: Annotation,
     selectedId?: number,
     annotationBackup: Annotation,
     changed: boolean
