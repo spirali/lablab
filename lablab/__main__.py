@@ -1,16 +1,22 @@
 import flask
 import argparse
+import click
 
-from lablab.service import start
+from lablab.service import start_service
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="image labeller")
-    parser.add_argument('path')
-    return parser.parse_args()
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+@click.argument("path")
+@click.option("--port", default=3800)
+def serve(path, port):
+    start_service(path, port)
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    start(args.path)
+    cli()
 

@@ -49,8 +49,9 @@ def upload_image(image_path):
     return jsonify("Ok")
 
 
-def start(root_path):
+def start_service(root_path, port):
     app.root_path = root_path
-    app.run(port=3800)
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=port)
 
 

@@ -33,6 +33,5 @@ def load_image(new_id, root, image_path):
     lab_path = real_path + ".lab"
     if os.path.isfile(lab_path):
         image_info["annotation"] = load_annotation(lab_path, real_path)
-        print(image_info)
 
     return image_info
