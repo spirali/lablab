@@ -23,7 +23,8 @@ function ImageTable(props: {images: ImageMap, selectedImage?: ImageInfo, onSelec
         pageSizeOptions: [8, 50, 100],
         rowStyle: row => ({
           backgroundColor: (props.selectedImage && props.selectedImage.path === row.path) ? '#EEE' : '#FFF'
-        })
+        }),
+        sorting: true,
       }}
       columns={[
         {
@@ -33,9 +34,11 @@ function ImageTable(props: {images: ImageMap, selectedImage?: ImageInfo, onSelec
         },
         { title: 'Image', field: 'path' },
         { title: 'Size',
+          customSort: (a, b) => a.width * a.height - b.width * b.height,
           render: row => row.width + "x" + row.height
         },
         { title: 'Label',
+          field: 'annotation',
           render: row => (row.annotation && row.annotation.items.length > 0)?(<Icon>done</Icon>):""
         },
       ]}
