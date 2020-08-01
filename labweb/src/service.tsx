@@ -1,7 +1,13 @@
 import { Annotation } from './ImageInfo';
 
 
-export const SERVER_URL = "http://localhost:3800";
+export let SERVER_URL = "";
+
+if (window.location.href.startsWith("http://localhost:3000")) {
+  console.log("DEV mode detected, connecting to http://localhost:3800");
+  SERVER_URL = "http://localhost:3800";
+}
+
 
 
 function doPost(url: string, data: any): Promise<Response> {

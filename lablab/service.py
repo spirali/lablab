@@ -6,7 +6,9 @@ from .image import find_images
 from .annotation import save_annotation
 import os
 
-app = Flask(__name__)
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+app = Flask(__name__, static_folder=os.path.join(ROOT_DIR, "labweb", "dist"), static_url_path='/')
 CORS(app)
 
 PREVIEW_SIZE = (40, 40)
@@ -20,6 +22,10 @@ def _get_image_path(app, image_path):
         return os.path.abspath(os.path.join(app.root_path, image_path))
     else:
          abort(404)
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 @app.route('/images')
 def get_images():
@@ -53,5 +59,6 @@ def start_service(root_path, port):
     app.root_path = root_path
     from waitress import serve
     serve(app, host='0.0.0.0', port=port)
+    #app.run(host='0.0.0.0', port=port, debug=True)
 
 
