@@ -14,6 +14,7 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
 
     const annotation = props.astate.annotation;
     const [zoom, setZoom] = React.useState<number>(1);
+    const svgRef = React.useRef<SVGSVGElement>(null);
 
     if (!image) {
         return <span>No Image</span>
@@ -25,8 +26,15 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
     const ZOOM_STEP = 0.25;
 
     const onClick = (evt: MouseEvent<SVGSVGElement>) => {
-        const e = evt.target as HTMLElement;
-        const dim = e.getBoundingClientRect();
+        //const e = evt.target as HTMLElement;
+        //const dim = e.getBoundingClientRect();
+
+        let current : unknown = svgRef.current;
+        if (current === null) {
+            return;
+        }
+
+        const dim = (current as HTMLElement).getBoundingClientRect()
         const x = evt.clientX - dim.left;
         const y = evt.clientY - dim.top;
         const astate = props.astate;
@@ -64,6 +72,7 @@ export function Annotator(props: {image?: ImageInfo, astate: AnnotationState, se
         </Box>
         <Box>
         <svg
+             ref={svgRef}
              onMouseDown={onClick}
             viewBox={"0 0 " + image.width + " " + image.height} style={{width: image.width * zoom, height: image.height * zoom}}>
             <image href={image_url} height={image.height} width={image.width}/>
