@@ -47,3 +47,10 @@ def hash_file(filename):
                 break
             hasher.update(data)
     return hasher.hexdigest()
+
+
+def find_image(base):
+    for ext in IMAGE_EXTENSIONS:
+        name = base + ext
+        if os.path.isfile(name):
+            return name

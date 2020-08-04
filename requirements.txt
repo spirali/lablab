@@ -2,3 +2,4 @@ flask
 pillow
 click
 waitress
+lxml
