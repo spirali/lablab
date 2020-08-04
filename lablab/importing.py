@@ -28,7 +28,9 @@ def _import_point(id, element):
     xmax = float(bndbox.find("xmax").text)
     ymax = float(bndbox.find("ymax").text)
     x = (xmin + xmax) / 2
-    y = (ymin + ymin) / 2
+    y = (ymin + ymax) / 2
+    #x = xmin
+    #y = ymin
     return {"id": id, "x": x, "y": y}
 
 
