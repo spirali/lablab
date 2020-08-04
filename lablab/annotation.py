@@ -8,34 +8,30 @@ LABLAB_FORMAT_VERSION = "0"
 
 
 POINT_SCHEMA = {
-    "type" : "object",
-    "properties" : {
-        "id" : {"type" : "number"},
-        "x" : {"type" : "number"},
-        "y" : {"type" : "number"},
+    "type": "object",
+    "properties": {
+        "id": {"type": "number"},
+        "x": {"type": "number"},
+        "y": {"type": "number"},
     },
     "additionalProperties": False,
-    "required": ["id", "x", "y"]
+    "required": ["id", "x", "y"],
 }
 
 ANNOTATION_SCHEMA = {
-    "type" : "object",
-    "properties" : {
-        "items" : {
-          "type": "array",
-            "items": POINT_SCHEMA
-        }
-    },
+    "type": "object",
+    "properties": {"items": {"type": "array", "items": POINT_SCHEMA}},
     "additionalProperties": False,
-    "required": ["items"]
+    "required": ["items"],
 }
+
 
 def save_annotation(annotation, target_path, img_path):
     validate(annotation, ANNOTATION_SCHEMA)
     lab = {
         "version": LABLAB_FORMAT_VERSION,
         "hash": hash_file(img_path),
-        "annotation": annotation
+        "annotation": annotation,
     }
     atomic_write(target_path, json.dumps(lab))
 

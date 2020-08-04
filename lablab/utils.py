@@ -40,7 +40,7 @@ def atomic_write(filename, content):
 def hash_file(filename):
     BUFFER_SIZE = 1 << 23  # 8MB
     hasher = hashlib.sha256()
-    with open(filename, 'rb') as f:
+    with open(filename, "rb") as f:
         while True:
             data = f.read(BUFFER_SIZE)
             if not data:
